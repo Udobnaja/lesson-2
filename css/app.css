@@ -306,4 +306,99 @@ body {
     top: 100%;
 }
 
+.drag-circle{
+    width: 250px;
+    height: 250px;
+    background: url('../img/dragline.png');
+    position: relative;
+}
+
+.drag-circle__button{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url('../img/button_calm.png');
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.drag-circle__button_pressed{
+    background: url('../img/button_pressed.png');
+}
+
+.panel{
+    width: 100px;
+    height: 143px;
+    position: absolute;
+    z-index: 2;
+}
+
+.panel_left{
+    background: url('../img/leftpanel.png');
+    transform: translateX(100px);
+}
+
+.panel_right{
+    background: url('../img/rightpanel.png');
+    transform: translateX(200px);
+}
+
+.keypanel{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin-top: 200px;
+}
+
+.keypanel__keyhole{
+
+    position: absolute;
+    width: 40px;
+    height: 56px;
+    background: url('../img/keyhole.png');
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    top: 50px;
+    z-index: 1;
+}
+
+.keypanel__footer{
+    position: fixed;
+    bottom: 0;
+    height: 84px;
+    background: rgba(0,0,0,.6);
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 0;
+    z-index: 6;
+    transition: transform .2s;
+    transform: translateY(84px);
+}
+
+.keypanel__footer_visible{
+    transform: translateY(0);
+}
+
+.keypanel__key{
+    width: 158px;
+    height: 73px;
+    background-image: url('../img/key_calm.png');
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.keypanel__key_pressed{
+    width: 70px;
+    height: 106px;
+    background-image: url('../img/key_moving.png');
+}
+
+.keypanel__key_inserted{
+    width: 18px;
+    height: 73px;
+    background-image: url('../img/key_in.png');
+}
 

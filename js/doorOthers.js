@@ -69,6 +69,7 @@ class Door1 extends DoorBase {
         lever.addEventListener('pointerdown', this._onLeverPointerDown);
         lever.addEventListener('pointerup', this._onLeverPointerUp.bind(this));
         lever.addEventListener('pointermove', this._onLeverPointerMove.bind(this));
+        //leave ? cancel
 
         this.gears = this.popup.querySelectorAll('.gears__item');
         this.gearsLeft = [...this.popup.querySelectorAll('.gears__placeholder')].map((el) => el.offsetLeft);
@@ -197,18 +198,109 @@ class Door1 extends DoorBase {
  * @param {Number} number
  * @param {Function} onUnlock
  */
-function Door2(number, onUnlock) {
-    DoorBase.apply(this, arguments);
+class Door2 extends DoorBase {
+  constructor(...args){
+    super(...args);
 
-    // ==== Напишите свой код для открытия третей двери здесь ====
-    // Для примера дверь откроется просто по клику на неё
-    this.popup.addEventListener('click', function() {
-        this.unlock();
-    }.bind(this));
-    // ==== END Напишите свой код для открытия третей двери здесь ====
+    this.panels = this.popup.querySelectorAll('.panel');
+
+    this.panels.forEach((p) => {
+      p.addEventListener('pointerdown', this._onPanelPointerDown.bind(this));
+      p.addEventListener('pointerup', this._onPanelPointerUp.bind(this));
+      p.addEventListener('pointermove', this._onPanelPointerMove.bind(this));
+    });
+
+    let key = this.popup.querySelector('.keypanel__key');
+    key.addEventListener('pointerdown', this._onKeyPointerDown.bind(this))
+    key.addEventListener('pointermove', this._onKeyPointerMove.bind(this))
+  }
+
+  _onKeyPointerDown(e){
+    let target = e.target;
+    target.classList.add('keypanel__key_pressed')
+  }
+
+  _onKeyPointerMove(e){
+    let target = e.target;
+    if (target.classList.contains('keypanel__key_inserted')){
+      return;
+    }
+
+    let newPos = e.clientY - target.parentElement.offsetTop - (target.offsetHeight/2);
+    if (target.getBoundingClientRect().top <= target.parentElement.parentElement.offsetTop + this.popup.querySelector('.keypanel__keyhole').offsetTop){
+      target.classList.add('keypanel__key_inserted');
+      this.unlock();
+    }
+    target.style.transform = `translateX(-50%) translateY(${newPos}px)`;
+
+  }
+
+  _onPanelPointerDown(e){
+    let target = e.target;
+    target.classList.add('panel_pressed');
+  }
+
+  _onPanelPointerUp(e){
+
+    this.panels.forEach((p) => {
+      p.classList.remove('panel_pressed');
+    });
+  }
+
+  _onPanelPointerMove(e){
+    if (this.popup.querySelector('.keypanel__key').classList.contains('keypanel__key_pressed')){
+      return;
+    }
+
+    let target = e.target;
+
+    if ([...this.panels].every(p => p.classList.contains('panel_pressed'))){
+      let newPos = e.clientX - target.parentElement.parentElement.offsetLeft - (target.offsetWidth/2);
+      if (target.dataset.pos === 'left'){
+        if (newPos >= target.offsetWidth){
+          newPos = target.offsetWidth;
+        }
+
+        if (newPos <= 0){
+          newPos = 0;
+        }
+      }
+      if (target.dataset.pos === 'right'){
+        if (newPos <= target.parentElement.offsetWidth/2){
+          newPos = target.parentElement.offsetWidth/2;
+        }
+
+        if (newPos >= target.parentElement.offsetWidth - target.offsetWidth){
+          newPos = target.parentElement.offsetWidth - target.offsetWidth;
+        }
+      }
+      target.style.transform = `translateX(${newPos}px)`;
+    }
+
+    let left = 0;
+    let right = 0;
+
+    this.panels.forEach((p) => {
+      if (p.dataset.pos === 'left'){
+        left = p.parentElement.offsetWidth/2 + p.parentElement.getBoundingClientRect().left -p.getBoundingClientRect().left - p.offsetWidth;
+      } else {
+        right = p.getBoundingClientRect().left - p.parentElement.getBoundingClientRect().left - p.parentElement.offsetWidth/2;
+      }
+
+    });
+
+    let keyhole = this.popup.querySelector('.keypanel__keyhole');
+    let keyContainer = this.popup.querySelector('.keypanel__footer');
+    if ((left >= keyhole.offsetWidth/2) && (right >= keyhole.offsetWidth/2)){
+      if (!keyContainer.classList.contains('keypanel__footer_visible')){
+        keyContainer.classList.add('keypanel__footer_visible');
+      }
+    } else {
+      keyContainer.classList.remove('keypanel__footer_visible');
+    }
+
+  }
 }
-Door2.prototype = Object.create(DoorBase.prototype);
-Door2.prototype.constructor = DoorBase;
 
 /**
  * Сундук
