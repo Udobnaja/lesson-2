@@ -5,7 +5,7 @@
 function App(el) {
     var appEl = el,
         doors = [
-            new Door0(0, onUnlock),
+            // new Door0(0, onUnlock),
             new Door1(1, onUnlock),
             new Door2(2, onUnlock),
             new Box(3, onUnlock)
@@ -21,7 +21,7 @@ function App(el) {
         var previousUnlocked;
 
         // Даем открыть следующую дверь
-        for (var i = 0; i < doors.length; i++) {
+        for (var i = 1; i < doors.length; i++) {
             if (!doors[i].isLocked) {
                 previousUnlocked = true;
             } else {

@@ -67,8 +67,57 @@ class Door1 extends DoorBase {
         const lever = this.popup.querySelector(".lever__button");
 
         lever.addEventListener('pointerdown', this._onLeverPointerDown);
-        lever.addEventListener('pointerup', this._onLeverPointerUp);
-        lever.addEventListener('pointermove', this._onLeverPointerMove);
+        lever.addEventListener('pointerup', this._onLeverPointerUp.bind(this));
+        lever.addEventListener('pointermove', this._onLeverPointerMove.bind(this));
+
+        this.gears = this.popup.querySelectorAll('.gears__item');
+        this.gearsLeft = [...this.popup.querySelectorAll('.gears__placeholder')].map((el) => el.offsetLeft);
+        this.gearsTop = [...this.popup.querySelectorAll('.gears__placeholder')].map((el) => el.offsetTop);
+        this.scores = 0;
+
+        for (let gear of this.gears){
+            gear.addEventListener('pointerdown', this._onGearPointerDown);
+            gear.addEventListener('pointerup', this._onGearPointerUp);
+            gear.addEventListener('pointermove', this._onGearPointerMove.bind(this));
+        }
+    }
+
+    _onGearPointerDown(e){
+        // понеслось - можем выставить определенный класс нажатия
+    }
+    _onGearPointerUp(e){
+      let target = e.target;
+
+      if (!target.classList.contains('gears__item_done')){
+        target.style.transform = `translateX(${target.dataset.left}px) translateY(0)`;
+      }
+    }
+
+    _onGearPointerMove(e){
+      let target = e.target;
+
+      if (target.classList.contains('gears__item_done')){
+        return;
+      }
+
+      let posX = e.clientX - target.parentElement.offsetLeft - (target.offsetWidth/2);
+      let posY = target.parentElement.offsetHeight - (e.clientY - target.parentElement.offsetTop - (target.offsetHeight/2));
+
+      target.style.transform = `translateX(${posX}px) translateY(-${posY}px)`;
+
+      let left = Math.trunc(posX);
+      let top = target.parentElement.offsetHeight - Math.trunc(posY);
+
+      if (this.gearsLeft.includes(left) && this.gearsTop.includes(top)){
+        target.style.transform = `translateX(${left}px) translateY(-${posY}px)`;
+        target.classList.add('gears__item_done');
+        this.scores += 1;
+        this.checkCondition();
+        // не успеваю побороть
+        // let snd = new Audio("../sound.mp3");
+        // snd.play();
+      }
+
     }
 
     _onLeverPointerDown(e){
@@ -82,6 +131,7 @@ class Door1 extends DoorBase {
       target.classList.remove('lever__button_pressed');
       target.releasePointerCapture(e.pointerId);
       target.style.transform = 'translateY(15px)';
+      this.hideGears();
     }
 
     _onLeverPointerMove(e){
@@ -91,25 +141,53 @@ class Door1 extends DoorBase {
 
       // Проверям класс, так как сафари не поддерживает setPointerCapture
       if ((target.hasPointerCapture && target.hasPointerCapture(e.pointerId)) || target.classList.contains('lever__button_pressed')) {
-        let newpos = e.clientY - target.parentElement.offsetTop - (target.offsetHeight/2);
+        let newpos = e.clientY -  target.parentElement.parentElement.offsetTop - (target.offsetHeight/2);
         let distance = target.parentElement.offsetHeight - target.offsetHeight;
+        let isHideGears = false;
 
         if (newpos < gap) {
           newpos = gap;
         } else if (newpos > (distance - gap)) {
           newpos = distance - gap;
+          isHideGears  = true;
         } else if (newpos > distance){
           newpos = distance;
         }
 
-        console.log({parentH: target.parentElement.offsetHeight, targetH: target.offsetHeight, newP: newpos});
+        if (!isHideGears) {
+          this.hideGears()
+        } else {
+          this.showGears();
+        }
 
-        // request animation frame
+        // request animation frame мб
         target.style.transform = `translateY(${newpos}px)`;
       }
     }
 
+    hideGears(){
+      for (let gear of this.gears){
+        if (gear.classList.contains('gears__item_done')){
+          gear.classList.remove('gears__item_done');
+          gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
+        }
 
+        if (gear.style.opacity) gear.style.opacity = 0;
+      }
+      if (this.scores) this.scores = 0;
+    }
+
+    showGears(){
+      for (let gear of this.gears){
+        gear.style.opacity = 1;
+      }
+    }
+
+    checkCondition(){
+      if (this.scores === 3){
+        this.unlock();
+      }
+    }
 }
 
 
