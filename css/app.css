@@ -285,7 +285,7 @@ body {
     transition: transform .1s, opacity .2s;
     opacity: 0;
     left: 0;
-    z-index: 9;
+    z-index: 7;
     pointer-events: none;
 }
 
@@ -316,6 +316,14 @@ body {
     background: url('../img/gear3.png');
     top: 100%;
     transform: translateX(30px);
+}
+
+.gears__item_done{
+    z-index: 8;
+}
+
+.gears__item_pressed{
+    z-index: 9;
 }
 
 .panel{
