@@ -131,7 +131,7 @@ class Door2 extends DoorBase {
 
         lever.addEventListener('pointerdown', this._onLeverPointerDown.bind(this));
         lever.addEventListener('pointerup', this._onLeverPointerUp.bind(this));
-        lever.addEventListener('pointerleave', this._onLeverPointerUp.bind(this));
+        // lever.addEventListener('pointerleave', this._onLeverPointerUp.bind(this));
         lever.addEventListener('pointercancel', this._onLeverPointerUp.bind(this));
         lever.addEventListener('pointermove', this._onLeverPointerMove.bind(this));
 
