@@ -255,6 +255,10 @@ class Door2 extends DoorBase {
             if (gear.classList.contains('gears__item_show')) {
                 gear.classList.remove('gears__item_show');
             }
+
+          if (gear.classList.contains('gears__item_pressed')) {
+            gear.classList.remove('gears__item_pressed');
+          }
         }
         if (this.scores) {
             this.scores = 0;
