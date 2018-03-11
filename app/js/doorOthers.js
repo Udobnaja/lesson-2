@@ -77,8 +77,6 @@ class Door1 extends DoorBase {
     }
 
     _onButtonPointerDown(e) {
-
-        let target = e.target;
         let oldHeight = this.scaleValue.offsetHeight;
         const timerIncrement = 9;
 
@@ -133,6 +131,7 @@ class Door2 extends DoorBase {
 
         lever.addEventListener('pointerdown', this._onLeverPointerDown.bind(this));
         lever.addEventListener('pointerup', this._onLeverPointerUp.bind(this));
+        // lever.addEventListener('pointerleave', this._onLeverPointerUp.bind(this));
         lever.addEventListener('pointercancel', this._onLeverPointerUp.bind(this));
         lever.addEventListener('pointermove', this._onLeverPointerMove.bind(this));
 
@@ -145,6 +144,7 @@ class Door2 extends DoorBase {
         for (let gear of this.gears) {
             gear.addEventListener('pointerdown', this._onGearPointerDown);
             gear.addEventListener('pointerup', this._onGearPointerUp);
+            // gear.addEventListener('pointerleave', this._onGearPointerUp);
             gear.addEventListener('pointercancel', this._onGearPointerUp);
             gear.addEventListener('pointermove', this._onGearPointerMove.bind(this));
         }
@@ -249,12 +249,17 @@ class Door2 extends DoorBase {
         for (let gear of this.gears) {
             if (gear.classList.contains('gears__item_done')) {
                 gear.classList.remove('gears__item_done');
-                gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
             }
+
+            gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
 
             if (gear.classList.contains('gears__item_show')) {
                 gear.classList.remove('gears__item_show');
             }
+
+          if (gear.classList.contains('gears__item_pressed')) {
+            gear.classList.remove('gears__item_pressed');
+          }
         }
         if (this.scores) {
             this.scores = 0;
@@ -291,6 +296,8 @@ class Box extends DoorBase {
         this.panels.forEach((p) => {
             p.addEventListener('pointerdown', this._onPanelPointerDown.bind(this));
             p.addEventListener('pointerup', this._onPanelPointerUp.bind(this));
+            p.addEventListener('pointercancel', this._onPanelPointerUp.bind(this));
+            p.addEventListener('pointerleave', this._onPanelPointerUp.bind(this));
             p.addEventListener('pointermove', this._onPanelPointerMove.bind(this));
         });
 
@@ -325,9 +332,9 @@ class Box extends DoorBase {
     }
 
     _onPanelPointerUp(e) {
-        this.panels.forEach((p) => {
-            p.classList.remove('panel_pressed');
-        });
+      this.panels.forEach((p) => {
+        p.classList.remove('panel_pressed');
+      });
     }
 
     _onPanelPointerMove(e) {
