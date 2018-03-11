@@ -1,0 +1,25 @@
+{
+  "name": "lesson-2",
+  "version": "1.0.0",
+  "description": "Навесить тач эвент не на весь контент Почему при доведении до конца при нажатии у меня не срабатывает потом отпускание",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint js/*.js --quiet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Udobnaja/lesson-2.git"
+  },
+  "author": "Udobnaja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Udobnaja/lesson-2/issues"
+  },
+  "homepage": "https://github.com/Udobnaja/lesson-2#readme",
+  "devDependencies": {
+    "eslint": "^4.18.2",
+    "eslint-config-yandex": "^1.0.6",
+    "gh-pages": "^1.1.0"
+  }
+}
