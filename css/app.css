@@ -405,7 +405,8 @@ body {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    touch-action: manipulation; /* for not scaling on ios */
+    touch-action: manipulation; /* Без такого указания скейлился экран на сафари*/
+    -webkit-touch-callout: none;
 }
 
 .button:active{
