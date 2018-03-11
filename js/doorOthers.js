@@ -137,27 +137,39 @@ class Door2 extends DoorBase {
 
     lever.addEventListener('pointerdown', this._onLeverPointerDown.bind(this));
     lever.addEventListener('pointerup', this._onLeverPointerUp.bind(this));
+    lever.addEventListener('pointercancel', this._onLeverPointerUp.bind(this));
     lever.addEventListener('pointermove', this._onLeverPointerMove.bind(this));
-    //leave ? cancel
 
     this.gears = this.popup.querySelectorAll('.gears__item');
-    this.gearsLeft = [...this.popup.querySelectorAll('.gears__placeholder')].map((el) => el.offsetLeft);
-    this.gearsTop = [...this.popup.querySelectorAll('.gears__placeholder')].map((el) => el.offsetTop);
+    let placeholders = [...this.popup.querySelectorAll('.gears__placeholder')];
+    this.gearsLeft = placeholders.map((el) => el.offsetLeft);
+    this.gearsTop = placeholders.map((el) => el.offsetTop);
     this.scores = 0;
 
     for (let gear of this.gears) {
       gear.addEventListener('pointerdown', this._onGearPointerDown);
       gear.addEventListener('pointerup', this._onGearPointerUp);
+      gear.addEventListener('pointercancel', this._onGearPointerUp);
       gear.addEventListener('pointermove', this._onGearPointerMove.bind(this));
     }
   }
 
   _onGearPointerDown(e) {
-    // понеслось - можем выставить определенный класс нажатия
+    let target = e.target;
+
+    if ([...this.gears].some(g => g.classList.contains('gears__item_pressed'))){
+      return;
+    }
+
+    target.classList.add('gears__item_pressed');
+    target.setPointerCapture(e.pointerId);
+
   }
 
   _onGearPointerUp(e) {
     let target = e.target;
+
+    target.classList.remove('gears__item_pressed');
 
     if (!target.classList.contains('gears__item_done')) {
       target.style.transform = `translateX(${target.dataset.left}px) translateY(0)`;
@@ -182,6 +194,7 @@ class Door2 extends DoorBase {
     if (this.gearsLeft.includes(left) && this.gearsTop.includes(top)) {
       target.style.transform = `translateX(${left}px) translateY(-${posY}px)`;
       target.classList.add('gears__item_done');
+      target.classList.remove('gears__item_pressed');
       this.scores += 1;
       this.checkCondition();
       // не успеваю побороть
@@ -243,14 +256,14 @@ class Door2 extends DoorBase {
         gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
       }
 
-      if (gear.style.opacity) gear.style.opacity = 0;
+      if (gear.classList.contains('gears__item_show')) gear.classList.remove('gears__item_show');
     }
     if (this.scores) this.scores = 0;
   }
 
   showGears() {
     for (let gear of this.gears) {
-      gear.style.opacity = 1;
+      gear.classList.add('gears__item_show');
     }
   }
 

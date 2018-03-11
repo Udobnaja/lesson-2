@@ -135,6 +135,7 @@ body {
 
     background: #000 url(../img/door_level_0.jpg) no-repeat center;
     background-size: cover;
+    touch-action:none;
 }
 
 .popup__close {
@@ -284,7 +285,13 @@ body {
     transition: transform .1s, opacity .2s;
     opacity: 0;
     left: 0;
+    z-index: 9;
+    pointer-events: none;
+}
 
+.gears__item_show{
+    opacity: 1;
+    pointer-events: initial;
 }
 
 .gears__item_left{
@@ -308,27 +315,7 @@ body {
     height: 75px;
     background: url('../img/gear3.png');
     top: 100%;
-}
-
-.drag-circle{
-    width: 250px;
-    height: 250px;
-    background: url('../img/dragline.png');
-    position: relative;
-}
-
-.drag-circle__button{
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background: url('../img/button_calm.png');
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-}
-
-.drag-circle__button_pressed{
-    background: url('../img/button_pressed.png');
+    transform: translateX(30px);
 }
 
 .panel{
@@ -415,6 +402,7 @@ body {
     font-size: 40px;
     color: rgba(255, 255, 255, .1);
     user-select: none;
+    touch-action: manipulation; /* for not scaling on ios */
 }
 
 .button:active{

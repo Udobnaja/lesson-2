@@ -6,8 +6,8 @@
 class App {
   constructor(el) {
     this.doors = [
-      new Door0(0, onUnlock.bind(this)),
-      new Door1(1, onUnlock.bind(this)),
+      // new Door0(0, onUnlock.bind(this)),
+      // new Door1(1, onUnlock.bind(this)),
       new Door2(2, onUnlock.bind(this)),
       new Box(3, onUnlock.bind(this))
     ];
@@ -20,7 +20,7 @@ class App {
       let previousUnlocked;
 
       // Даем открыть следующую дверь
-      for (let i = 0; i < this.doors.length; i++) {
+      for (let i = 2; i < this.doors.length; i++) {
         if (!this.doors[i].isLocked) {
           previousUnlocked = true;
         } else {
