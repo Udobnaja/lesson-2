@@ -249,8 +249,9 @@ class Door2 extends DoorBase {
         for (let gear of this.gears) {
             if (gear.classList.contains('gears__item_done')) {
                 gear.classList.remove('gears__item_done');
-                gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
             }
+
+            gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
 
             if (gear.classList.contains('gears__item_show')) {
                 gear.classList.remove('gears__item_show');
