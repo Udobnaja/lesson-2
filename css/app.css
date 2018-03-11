@@ -401,6 +401,9 @@ body {
     border: 0;
     font-size: 40px;
     color: rgba(255, 255, 255, .1);
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     touch-action: manipulation; /* for not scaling on ios */
 }
