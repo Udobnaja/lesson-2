@@ -5,7 +5,7 @@
     <title>Dungeon of Doom</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/app.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 
 <body>
@@ -15,7 +15,6 @@
         <div class="level level_1"><div class="door door_locked door_disabled door_level_1"></div></div>
         <div class="level level_2"><div class="door door_locked door_disabled door_level_2"></div></div>
         <div class="level level_3"><div class="box box_locked door door_disabled door_level_3"></div></div>
-        <!--<div class="level level_4"></div>-->
 
         <div class="popup popup_hidden popup_level_0">
             <div class="popup__content popup__content_level_0" touch-action="none">
@@ -27,9 +26,16 @@
                 </div>
             </div>
         </div>
-        <div class="popup popup_hidden popup_level_1" touch-action="none">
+        <div class="popup popup_hidden popup_level_1">
             <div class="popup__content popup__content_level_1">
                 <div class="popup__close">╳</div>
+                <div class="door-riddle door-riddle_column">
+                    <h2 class="time-headline">10 sec</h2>
+                    <div class="scale">
+                        <div class="scale__value"></div>
+                    </div>
+                    <button class="button" touch-action="none">Push Me</button>
+                </div>
             </div>
         </div>
         <div class="popup popup_hidden popup_level_2" touch-action="none">

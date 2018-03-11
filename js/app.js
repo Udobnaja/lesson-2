@@ -17,10 +17,10 @@ class App {
      * Тут даем возможность открыть следующие двери
      */
     function onUnlock() {
-      var previousUnlocked;
+      let previousUnlocked;
 
       // Даем открыть следующую дверь
-      for (var i = 0; i < this.doors.length; i++) {
+      for (let i = 0; i < this.doors.length; i++) {
         if (!this.doors[i].isLocked) {
           previousUnlocked = true;
         } else {

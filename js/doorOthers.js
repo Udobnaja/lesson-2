@@ -61,6 +61,64 @@ class Door0 extends DoorBase {
 class Door1 extends DoorBase {
   constructor(...args) {
     super(...args);
+
+    const button = this.popup.querySelector(".button");
+
+    button.addEventListener('pointerdown', this._onButtonPointerDown.bind(this));
+
+
+    this.scaleValue = this.popup.querySelector(".scale__value");
+    this.scale = this.popup.querySelector(".scale");
+    this.seconds = 10;
+    this.timerId;
+
+
+  }
+
+  _resetResult(){
+    this.popup.querySelector(".time-headline").textContent = '10 sec';
+    this.seconds = 10;
+    this.scaleValue.style.height = 0;
+    this.timerId = null;
+  }
+
+  _onButtonPointerDown(e){
+
+    let target = e.target;
+    let oldHeight = this.scaleValue.offsetHeight;
+
+
+    if (!this.timerId){
+      this.timerId = setInterval(() => {
+        if (oldHeight < this.scaleValue.offsetHeight){
+          oldHeight = this.scaleValue.offsetHeight;
+        } else {
+          this.scaleValue.style.height = 0;
+        }
+
+        this.popup.querySelector(".time-headline").textContent = `${--this.seconds} sec`;
+
+        if (this.seconds <= 0) {
+          clearInterval(this.timerId);
+
+          if (this.scaleValue.offsetHeight < this.scale.offsetHeight){
+            target.disabled = true;
+            alert('Проиграли!');
+            this.closePopup();
+            this._resetResult();
+          }
+        }
+
+      }, 1000);
+    }
+
+    this.scaleValue.style.height = this.scaleValue.offsetHeight + 9 + 'px';
+
+    if (this.scaleValue.offsetHeight >= this.scale.offsetHeight && this.timerId){
+      clearInterval(this.timerId);
+      this.unlock();
+    }
+
   }
 }
 
@@ -77,7 +135,7 @@ class Door2 extends DoorBase {
 
     const lever = this.popup.querySelector(".lever__button");
 
-    lever.addEventListener('pointerdown', this._onLeverPointerDown);
+    lever.addEventListener('pointerdown', this._onLeverPointerDown.bind(this));
     lever.addEventListener('pointerup', this._onLeverPointerUp.bind(this));
     lever.addEventListener('pointermove', this._onLeverPointerMove.bind(this));
     //leave ? cancel
