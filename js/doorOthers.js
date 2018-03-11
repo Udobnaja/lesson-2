@@ -77,8 +77,6 @@ class Door1 extends DoorBase {
     }
 
     _onButtonPointerDown(e) {
-
-        let target = e.target;
         let oldHeight = this.scaleValue.offsetHeight;
         const timerIncrement = 9;
 
@@ -133,6 +131,7 @@ class Door2 extends DoorBase {
 
         lever.addEventListener('pointerdown', this._onLeverPointerDown.bind(this));
         lever.addEventListener('pointerup', this._onLeverPointerUp.bind(this));
+        lever.addEventListener('pointerleave', this._onLeverPointerUp.bind(this));
         lever.addEventListener('pointercancel', this._onLeverPointerUp.bind(this));
         lever.addEventListener('pointermove', this._onLeverPointerMove.bind(this));
 
@@ -145,6 +144,7 @@ class Door2 extends DoorBase {
         for (let gear of this.gears) {
             gear.addEventListener('pointerdown', this._onGearPointerDown);
             gear.addEventListener('pointerup', this._onGearPointerUp);
+            gear.addEventListener('pointerleave', this._onGearPointerUp);
             gear.addEventListener('pointercancel', this._onGearPointerUp);
             gear.addEventListener('pointermove', this._onGearPointerMove.bind(this));
         }
