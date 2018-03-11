@@ -330,9 +330,11 @@ class Box extends DoorBase {
     }
 
     _onPanelPointerUp(e) {
-        this.panels.forEach((p) => {
-            p.classList.remove('panel_pressed');
-        });
+      let target = e.target;
+      target.classList.remove('panel_pressed');
+        // this.panels.forEach((p) => {
+        //     p.classList.remove('panel_pressed');
+        // });
     }
 
     _onPanelPointerMove(e) {
