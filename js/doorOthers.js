@@ -69,13 +69,13 @@ class Door1 extends DoorBase {
 
         this.scaleValue = this.popup.querySelector('.scale__value');
         this.scale = this.popup.querySelector('.scale');
-        this.seconds = 10;
-        this.timerId;
+        // this.seconds = this.scaleValue.dataset.seconds;
+        this.timerId = null;
     }
 
     _resetResult() {
-        this.popup.querySelector('.time-headline').textContent = '10 sec';
-        this.seconds = 10;
+        this.popup.querySelector('.time-headline').textContent = `${this.scaleValue.dataset.seconds} sec`;
+        // this.seconds = this.scaleValue.dataset.seconds;
         this.scaleValue.style.height = 0;
         this.timerId = null;
     }
@@ -84,9 +84,11 @@ class Door1 extends DoorBase {
 
         let target = e.target;
         let oldHeight = this.scaleValue.offsetHeight;
+        const timerIncrement = 9;
 
 
         if (!this.timerId) {
+            let seconds = this.scaleValue.dataset.seconds;
             this.timerId = setInterval(() => {
                 if (oldHeight < this.scaleValue.offsetHeight) {
                     oldHeight = this.scaleValue.offsetHeight;
@@ -94,9 +96,9 @@ class Door1 extends DoorBase {
                     this.scaleValue.style.height = 0;
                 }
 
-                this.popup.querySelector('.time-headline').textContent = `${--this.seconds} sec`;
+                this.popup.querySelector('.time-headline').textContent = `${--seconds} sec`;
 
-                if (this.seconds <= 0) {
+                if (seconds <= 0) {
                     clearInterval(this.timerId);
 
                     if (this.scaleValue.offsetHeight < this.scale.offsetHeight) {
@@ -110,7 +112,7 @@ class Door1 extends DoorBase {
             }, 1000);
         }
 
-        this.scaleValue.style.height = this.scaleValue.offsetHeight + 9 + 'px';
+        this.scaleValue.style.height = this.scaleValue.offsetHeight + timerIncrement + 'px';
 
         if (this.scaleValue.offsetHeight >= this.scale.offsetHeight && this.timerId) {
             clearInterval(this.timerId);
