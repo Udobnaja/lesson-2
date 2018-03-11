@@ -296,6 +296,7 @@ class Box extends DoorBase {
         this.panels.forEach((p) => {
             p.addEventListener('pointerdown', this._onPanelPointerDown.bind(this));
             p.addEventListener('pointerup', this._onPanelPointerUp.bind(this));
+            p.addEventListener('pointercancel', this._onPanelPointerUp.bind(this));
             p.addEventListener('pointermove', this._onPanelPointerMove.bind(this));
         });
 
