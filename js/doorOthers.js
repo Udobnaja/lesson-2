@@ -87,10 +87,13 @@ class Door1 extends DoorBase {
             let seconds = this.scaleValue.dataset.seconds;
             this.timerId = setInterval(() => {
                 if (oldHeight < this.scaleValue.offsetHeight) {
-                    oldHeight = this.scaleValue.offsetHeight;
+                    // oldHeight = this.scaleValue.offsetHeight;
                 } else {
                     this.scaleValue.style.height = 0;
+
                 }
+
+                oldHeight = this.scaleValue.offsetHeight;
 
                 this.popup.querySelector('.time-headline').textContent = `${--seconds} sec`;
 
