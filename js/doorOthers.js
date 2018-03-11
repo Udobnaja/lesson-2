@@ -297,6 +297,7 @@ class Box extends DoorBase {
             p.addEventListener('pointerdown', this._onPanelPointerDown.bind(this));
             p.addEventListener('pointerup', this._onPanelPointerUp.bind(this));
             p.addEventListener('pointercancel', this._onPanelPointerUp.bind(this));
+            p.addEventListener('pointerleave', this._onPanelPointerUp.bind(this));
             p.addEventListener('pointermove', this._onPanelPointerMove.bind(this));
         });
 
@@ -331,11 +332,9 @@ class Box extends DoorBase {
     }
 
     _onPanelPointerUp(e) {
-      let target = e.target;
-      target.classList.remove('panel_pressed');
-        // this.panels.forEach((p) => {
-        //     p.classList.remove('panel_pressed');
-        // });
+      this.panels.forEach((p) => {
+        p.classList.remove('panel_pressed');
+      });
     }
 
     _onPanelPointerMove(e) {
