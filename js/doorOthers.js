@@ -65,17 +65,13 @@ class Door1 extends DoorBase {
         const button = this.popup.querySelector('.button');
 
         button.addEventListener('pointerdown', this._onButtonPointerDown.bind(this));
-
-
         this.scaleValue = this.popup.querySelector('.scale__value');
         this.scale = this.popup.querySelector('.scale');
-        // this.seconds = this.scaleValue.dataset.seconds;
         this.timerId = null;
     }
 
     _resetResult() {
         this.popup.querySelector('.time-headline').textContent = `${this.scaleValue.dataset.seconds} sec`;
-        // this.seconds = this.scaleValue.dataset.seconds;
         this.scaleValue.style.height = 0;
         this.timerId = null;
     }
@@ -102,7 +98,6 @@ class Door1 extends DoorBase {
                     clearInterval(this.timerId);
 
                     if (this.scaleValue.offsetHeight < this.scale.offsetHeight) {
-                        target.disabled = true;
                         alert('Проиграли!');
                         this.closePopup();
                         this._resetResult();
