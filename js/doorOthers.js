@@ -251,15 +251,15 @@ class Door2 extends DoorBase {
                 gear.classList.remove('gears__item_done');
             }
 
-            gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
-
             if (gear.classList.contains('gears__item_show')) {
                 gear.classList.remove('gears__item_show');
             }
 
-          if (gear.classList.contains('gears__item_pressed')) {
-            gear.classList.remove('gears__item_pressed');
-          }
+            if (gear.classList.contains('gears__item_pressed')) {
+              gear.classList.remove('gears__item_pressed');
+            }
+
+            gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
         }
         if (this.scores) {
             this.scores = 0;
