@@ -174,7 +174,7 @@ class Door2 extends DoorBase {
     _onGearPointerMove(e) {
         let target = e.target;
 
-        if (target.classList.contains('gears__item_done')) {
+        if (target.classList.contains('gears__item_done') || !target.classList.contains('gears__item_pressed')) {
             return;
         }
 
