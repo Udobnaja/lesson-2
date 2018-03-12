@@ -142,10 +142,10 @@ class Door2 extends DoorBase {
         this.scores = 0;
 
         for (let gear of this.gears) {
-            gear.addEventListener('pointerdown', this._onGearPointerDown);
-            gear.addEventListener('pointerup', this._onGearPointerUp);
+            gear.addEventListener('pointerdown', this._onGearPointerDown.bind(this));
+            gear.addEventListener('pointerup', this._onGearPointerUp.bind(this));
             // gear.addEventListener('pointerleave', this._onGearPointerUp);
-            gear.addEventListener('pointercancel', this._onGearPointerUp);
+            gear.addEventListener('pointercancel', this._onGearPointerUp.bind(this));
             gear.addEventListener('pointermove', this._onGearPointerMove.bind(this));
         }
     }
