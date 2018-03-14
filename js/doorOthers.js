@@ -1,10 +1,19 @@
+const DOORS_CONFIG = {
+    DOOR1: {
+        INITIAL_SECOND_STATE: 10,
+        MIN_SCALE_HEIGHT: 0,
+        TIMER_INCREMENT: 9,
+        FAIL_TEXT: 'Проиграли!',
+        TIMER_INTERVAL: 1000
+    }
+};
+
 /**
  * @class Door0
  * @augments DoorBase
  * @param {Number} number
  * @param {Function} onUnlock
  */
-
 
 class Door0 extends DoorBase {
     constructor(...args) {
@@ -67,52 +76,55 @@ class Door1 extends DoorBase {
         button.addEventListener('pointerdown', this._onButtonPointerDown.bind(this));
         this.scaleValue = this.popup.querySelector('.scale__value');
         this.scale = this.popup.querySelector('.scale');
+        this.timerHeadline = this.popup.querySelector('.time-headline');
         this.timerId = null;
+    }
+
+    set _timerSeconds(seconds){
+        this.timerHeadline.textContent = `${seconds} sec`;
     }
 
     _resetResult() {
-        this.popup.querySelector('.time-headline').textContent = `${this.scaleValue.dataset.seconds} sec`;
-        this.scaleValue.style.height = 0;
+        this._timerSeconds = DOORS_CONFIG.DOOR1.INITIAL_SECOND_STATE;
+        this.scaleValue.style.height = DOORS_CONFIG.DOOR1.MIN_SCALE_HEIGHT;
+        clearInterval(this.timerId);
         this.timerId = null;
     }
 
-    _onButtonPointerDown(e) {
-        let oldHeight = this.scaleValue.offsetHeight;
-        const timerIncrement = 9;
+    _onButtonPointerDown() {
+        this._animateScaleHeight(this.scaleValue.offsetHeight, DOORS_CONFIG.DOOR1.INITIAL_SECOND_STATE);
 
-
-        if (!this.timerId) {
-            let seconds = this.scaleValue.dataset.seconds;
-            this.timerId = setInterval(() => {
-
-                if (oldHeight === this.scaleValue.offsetHeight) {
-                    this.scaleValue.style.height = 0;
-                }
-
-                oldHeight = this.scaleValue.offsetHeight;
-
-                this.popup.querySelector('.time-headline').textContent = `${--seconds} sec`;
-
-                if (seconds <= 0) {
-                    clearInterval(this.timerId);
-
-                    if (this.scaleValue.offsetHeight < this.scale.offsetHeight) {
-                        alert('Проиграли!');
-                        this.closePopup();
-                        this._resetResult();
-                    }
-                }
-
-            }, 1000);
-        }
-
-        this.scaleValue.style.height = this.scaleValue.offsetHeight + timerIncrement + 'px';
-
-        if (this.scaleValue.offsetHeight >= this.scale.offsetHeight && this.timerId) {
+        if ((this.scaleValue.offsetHeight >= this.scale.offsetHeight) && this.timerId) {
             clearInterval(this.timerId);
             this.unlock();
         }
+    }
 
+    _animateScaleHeight(previousHeight, seconds){
+        if (!this.timerId) {
+            this.timerId = setInterval(() => {
+
+                if (previousHeight === this.scaleValue.offsetHeight) {
+                    this.scaleValue.style.height = DOORS_CONFIG.DOOR1.MIN_SCALE_HEIGHT;
+                }
+
+                previousHeight = this.scaleValue.offsetHeight;
+                this._timerSeconds = --seconds;
+
+                if (seconds <= 0) {
+                    alert(DOORS_CONFIG.DOOR1.FAIL_TEXT);
+                    this.closePopup();
+                }
+
+            }, DOORS_CONFIG.DOOR1.TIMER_INTERVAL);
+        }
+
+        this.scaleValue.style.height = this.scaleValue.offsetHeight + DOORS_CONFIG.DOOR1.TIMER_INCREMENT + 'px';
+    }
+
+    closePopup() {
+        this.popup.classList.add('popup_hidden');
+        this._resetResult();
     }
 }
 
@@ -251,15 +263,15 @@ class Door2 extends DoorBase {
                 gear.classList.remove('gears__item_done');
             }
 
+            gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
+
             if (gear.classList.contains('gears__item_show')) {
                 gear.classList.remove('gears__item_show');
             }
 
-            if (gear.classList.contains('gears__item_pressed')) {
-              gear.classList.remove('gears__item_pressed');
-            }
-
-            gear.style.transform = `translateX(${gear.dataset.left}px) translateY(0)`;
+          if (gear.classList.contains('gears__item_pressed')) {
+            gear.classList.remove('gears__item_pressed');
+          }
         }
         if (this.scores) {
             this.scores = 0;
