@@ -75,7 +75,7 @@ class Door1 extends DoorBase {
 
         button.addEventListener('pointerdown', this._onButtonPointerDown.bind(this));
         this.scaleValue = this.popup.querySelector('.scale__value');
-        this.scale = this.popup.querySelector('.scale');
+        this.scaleHeight = this.popup.querySelector('.scale').offsetHeight;
         this.timerHeadline = this.popup.querySelector('.time-headline');
         this.timerId = null;
     }
@@ -94,7 +94,7 @@ class Door1 extends DoorBase {
     _onButtonPointerDown() {
         this._animateScaleHeight(this.scaleValue.offsetHeight, DOORS_CONFIG.DOOR1.INITIAL_SECOND_STATE);
 
-        if ((this.scaleValue.offsetHeight >= this.scale.offsetHeight) && this.timerId) {
+        if ((this.scaleValue.offsetHeight >= this.scaleHeight) && this.timerId) {
             clearInterval(this.timerId);
             this.unlock();
         }
