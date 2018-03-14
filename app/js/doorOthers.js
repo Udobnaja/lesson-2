@@ -76,17 +76,22 @@ class Door1 extends DoorBase {
         button.addEventListener('pointerdown', this._onButtonPointerDown.bind(this));
         this.scaleValue = this.popup.querySelector('.scale__value');
         this.scale = this.popup.querySelector('.scale');
+        this.timerHeadline = this.popup.querySelector('.time-headline');
         this.timerId = null;
     }
 
+    set _timerSeconds(seconds){
+        this.timerHeadline.textContent = `${seconds} sec`;
+    }
+
     _resetResult() {
-        this.popup.querySelector('.time-headline').textContent = `${DOORS_CONFIG.DOOR1.INITIAL_SECOND_STATE} sec`;
+        this._timerSeconds = DOORS_CONFIG.DOOR1.INITIAL_SECOND_STATE;
         this.scaleValue.style.height = DOORS_CONFIG.DOOR1.MIN_SCALE_HEIGHT;
         clearInterval(this.timerId);
         this.timerId = null;
     }
 
-    _onButtonPointerDown(e) {
+    _onButtonPointerDown() {
         this._animateScaleHeight(this.scaleValue.offsetHeight, DOORS_CONFIG.DOOR1.INITIAL_SECOND_STATE);
 
         if ((this.scaleValue.offsetHeight >= this.scale.offsetHeight) && this.timerId) {
@@ -104,8 +109,7 @@ class Door1 extends DoorBase {
                 }
 
                 previousHeight = this.scaleValue.offsetHeight;
-
-                this.popup.querySelector('.time-headline').textContent = `${--seconds} sec`;
+                this._timerSeconds = --seconds;
 
                 if (seconds <= 0) {
                     alert(DOORS_CONFIG.DOOR1.FAIL_TEXT);
