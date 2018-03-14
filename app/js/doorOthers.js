@@ -1,10 +1,19 @@
+const DOORS_CONFIG = {
+    DOOR1: {
+        INITIAL_SECOND_STATE: 10,
+        MIN_SCALE_HEIGHT: 0,
+        TIMER_INCREMENT: 9,
+        FAIL_TEXT: 'Проиграли!',
+        TIMER_INTERVAL: 1000
+    }
+};
+
 /**
  * @class Door0
  * @augments DoorBase
  * @param {Number} number
  * @param {Function} onUnlock
  */
-
 
 class Door0 extends DoorBase {
     constructor(...args) {
@@ -71,48 +80,47 @@ class Door1 extends DoorBase {
     }
 
     _resetResult() {
-        this.popup.querySelector('.time-headline').textContent = `${this.scaleValue.dataset.seconds} sec`;
-        this.scaleValue.style.height = 0;
+        this.popup.querySelector('.time-headline').textContent = `${DOORS_CONFIG.DOOR1.INITIAL_SECOND_STATE} sec`;
+        this.scaleValue.style.height = DOORS_CONFIG.DOOR1.MIN_SCALE_HEIGHT;
+        clearInterval(this.timerId);
         this.timerId = null;
     }
 
     _onButtonPointerDown(e) {
-        let oldHeight = this.scaleValue.offsetHeight;
-        const timerIncrement = 9;
+        this._animateScaleHeight(this.scaleValue.offsetHeight, DOORS_CONFIG.DOOR1.INITIAL_SECOND_STATE);
 
+        if ((this.scaleValue.offsetHeight >= this.scale.offsetHeight) && this.timerId) {
+            clearInterval(this.timerId);
+            this.unlock();
+        }
+    }
 
+    _animateScaleHeight(previousHeight, seconds){
         if (!this.timerId) {
-            let seconds = this.scaleValue.dataset.seconds;
             this.timerId = setInterval(() => {
 
-                if (oldHeight === this.scaleValue.offsetHeight) {
-                    this.scaleValue.style.height = 0;
+                if (previousHeight === this.scaleValue.offsetHeight) {
+                    this.scaleValue.style.height = DOORS_CONFIG.DOOR1.MIN_SCALE_HEIGHT;
                 }
 
-                oldHeight = this.scaleValue.offsetHeight;
+                previousHeight = this.scaleValue.offsetHeight;
 
                 this.popup.querySelector('.time-headline').textContent = `${--seconds} sec`;
 
                 if (seconds <= 0) {
-                    clearInterval(this.timerId);
-
-                    if (this.scaleValue.offsetHeight < this.scale.offsetHeight) {
-                        alert('Проиграли!');
-                        this.closePopup();
-                        this._resetResult();
-                    }
+                    alert(DOORS_CONFIG.DOOR1.FAIL_TEXT);
+                    this.closePopup();
                 }
 
-            }, 1000);
+            }, DOORS_CONFIG.DOOR1.TIMER_INTERVAL);
         }
 
-        this.scaleValue.style.height = this.scaleValue.offsetHeight + timerIncrement + 'px';
+        this.scaleValue.style.height = this.scaleValue.offsetHeight + DOORS_CONFIG.DOOR1.TIMER_INCREMENT + 'px';
+    }
 
-        if (this.scaleValue.offsetHeight >= this.scale.offsetHeight && this.timerId) {
-            clearInterval(this.timerId);
-            this.unlock();
-        }
-
+    closePopup() {
+        this.popup.classList.add('popup_hidden');
+        this._resetResult();
     }
 }
 
